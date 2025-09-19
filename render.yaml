@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: user-management-service
+    plan: free
+    repo: https://github.com/YashNimkar78/user-management-service.git
+    dockerfilePath: ./Dockerfile
