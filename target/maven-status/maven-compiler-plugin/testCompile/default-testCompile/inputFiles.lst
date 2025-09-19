@@ -1,0 +1,8 @@
+/Users/snehabhute/eclipse-workspace/user-management-service/src/test/java/com/service/usermanagement/repository/UserRepositoryTest.java
+/Users/snehabhute/eclipse-workspace/user-management-service/src/test/java/com/service/usermanagement/controller/UserControllerTest.java
+/Users/snehabhute/eclipse-workspace/user-management-service/src/test/java/com/service/usermanagement/controller/AuthControllerTest.java
+/Users/snehabhute/eclipse-workspace/user-management-service/src/test/java/com/service/usermanagement/UsermanagementApplicationTests.java
+/Users/snehabhute/eclipse-workspace/user-management-service/src/test/java/com/service/usermanagement/repository/RoleRepositoryTest.java
+/Users/snehabhute/eclipse-workspace/user-management-service/src/test/java/com/service/usermanagement/service/CustomUserDetailsServiceTest.java
+/Users/snehabhute/eclipse-workspace/user-management-service/src/test/java/com/service/usermanagement/config/JwtUtilTest.java
+/Users/snehabhute/eclipse-workspace/user-management-service/src/test/java/com/service/usermanagement/service/UserServiceTest.java

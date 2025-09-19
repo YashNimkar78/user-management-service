@@ -1,11 +1,10 @@
 package com.service.usermanagement.config;
 
-
-
-
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,15 +13,13 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.service.usermanagement.service.CustomUserDetailsService;
 
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-
 @Configuration
 public class SecurityConfig {
 
     private final JwtUtil jwtUtil;
     private final CustomUserDetailsService userDetailsService;
 
-    public SecurityConfig(JwtUtil jwtUtil, CustomUserDetailsService userDetailsService){
+    public SecurityConfig(JwtUtil jwtUtil, CustomUserDetailsService userDetailsService) {
         this.jwtUtil = jwtUtil;
         this.userDetailsService = userDetailsService;
     }
@@ -32,24 +29,33 @@ public class SecurityConfig {
         JwtAuthenticationFilter jwtFilter = new JwtAuthenticationFilter(jwtUtil);
 
         http
-          .csrf().disable()
-          .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-          .and()
-          .authorizeHttpRequests()
-            .requestMatchers("/login", "/register", "/h2/**").permitAll()
-            .requestMatchers("/users").hasAuthority("ROLE_ADMIN")
-            .requestMatchers("/users/*").hasAnyAuthority("ROLE_ADMIN", "ROLE_USER")
-            .anyRequest().authenticated()
-          .and()
-          .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+            .csrf(csrf -> csrf.disable()) //CSRF disabled for APIs
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Stateless sessions
+            .authorizeHttpRequests(auth -> auth
+                // Public endpoints
+                .requestMatchers("/login", "/register").permitAll()
 
-        // Allow H2 console frames
-        http.headers().frameOptions().sameOrigin();
+                // ADMIN can view all users
+                .requestMatchers("/users").hasRole("ADMIN")
+
+                // USER and ADMIN can view a specific user (GET only)
+                .requestMatchers(org.springframework.http.HttpMethod.GET, "/users/*")
+                    .hasAnyRole("USER", "ADMIN")
+
+                // Only ADMIN can delete a user
+                .requestMatchers(org.springframework.http.HttpMethod.DELETE, "/users/*")
+                    .hasRole("ADMIN")
+
+                // Any other request must be authenticated
+                .anyRequest().authenticated()
+            )
+            .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 

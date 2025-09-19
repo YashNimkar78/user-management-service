@@ -23,8 +23,9 @@ public class UsermanagementApplication {
     CommandLineRunner init(RoleRepository roleRepo, UserRepository userRepo, PasswordEncoder encoder) {
         return args -> {
             if(!roleRepo.existsById("ROLE_USER")) roleRepo.save(new Role("ROLE_USER"));
-            if(!roleRepo.existsById("ROLE_ADMIN")) roleRepo.save(new Role("ROLE_ADMIN"));
+            if(!roleRepo.existsById("ROLE_ADMIN")) roleRepo.save(new Role("ROLE_ADMIN"));  //Ensure default roles exist
 
+            //Ensure a default admin user exists
             if(!userRepo.findByEmail("admin@example.com").isPresent()){
                 User admin = new User();
                 admin.setEmail("admin@example.com");

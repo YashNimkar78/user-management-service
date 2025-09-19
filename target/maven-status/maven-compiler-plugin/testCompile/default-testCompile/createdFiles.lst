@@ -1,0 +1,8 @@
+com/service/usermanagement/service/CustomUserDetailsServiceTest.class
+com/service/usermanagement/repository/RoleRepositoryTest.class
+com/service/usermanagement/config/JwtUtilTest.class
+com/service/usermanagement/UsermanagementApplicationTests.class
+com/service/usermanagement/controller/AuthControllerTest.class
+com/service/usermanagement/controller/UserControllerTest.class
+com/service/usermanagement/service/UserServiceTest.class
+com/service/usermanagement/repository/UserRepositoryTest.class
